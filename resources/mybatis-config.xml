@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org//dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--启动缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--使用自动增长主键-->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!--延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--取消层级加载-->
+        <setting name="aggressiveLazyLoading" value="false" />
+    </settings>
+    <typeAliases>
+        <package name="com.mcy.website.entity"/>
+    </typeAliases>
+    <mappers>
+        <package name="com.mcy.website.dao" />
+    </mappers>
+</configuration>
