@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -38,12 +38,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService = null;
 
+    @Autowired
+    private LoginSuccess loginSuccess = null;
+
+    @Autowired
+    private LoginFail loginFail = null;
+
     /**
      * 加密方式
      */
     @Bean
     PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     /**
@@ -58,12 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("admin")
-                .antMatchers("/db/**").hasRole("dba")
+                .antMatchers("/dba/**").hasRole("dba")
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login").permitAll()
-                .successHandler(new LoginSuccess())
-                .failureHandler(new LoginFail())
+                .successHandler(loginSuccess)
+                .failureHandler(loginFail)
                 .and()
                 .logout()
                 .addLogoutHandler(new LogoutHandler() {
@@ -83,8 +89,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()   //添加header设置，支持跨域和ajax请求
                 //返回给浏览器的Response的Header
                 .headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
-                new Header("Access-control-Allow-Origin", "*"),
-                new Header("Access-Control-Expose-Headers", "Authorization"))))
+                    new Header("Access-control-Allow-Origin", "*"),
+                    new Header("Access-Control-Expose-Headers", "Authorization"))))
                 .and() //拦截OPTIONS请求，直接返回header
                 .addFilterAfter(new OncePerRequestFilter() {
                     @Override
@@ -98,7 +104,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }, CorsFilter.class)
                 .csrf().disable();
-
     }
 
     /**

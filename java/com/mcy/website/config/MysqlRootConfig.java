@@ -23,8 +23,8 @@ import java.util.Properties;
 @PropertySource(value = "classpath:jdbc.properties")
 @EnableTransactionManagement
 //定义spring扫描的包
-@ComponentScan(value = "com.mcy.website.*", includeFilters =
-        {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = {Service.class})})
+//@ComponentScan(value = "com.mcy.website.*", includeFilters =
+//        {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = {Service.class})})
 public class MysqlRootConfig implements TransactionManagementConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(MysqlRootConfig.class);

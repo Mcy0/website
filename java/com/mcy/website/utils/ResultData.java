@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +54,7 @@ public class ResultData {
             map.put("data", data);
         }
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         printWriter.write(objectMapper.writeValueAsString(map));
         printWriter.flush();
         printWriter.close();

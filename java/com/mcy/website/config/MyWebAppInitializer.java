@@ -7,7 +7,8 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{RootConfig.class, RedisRootConfig.class,MysqlRootConfig.class , WebSecurityConfig.class};
+        return new Class[]{RootConfig.class, RedisRootConfig.class,
+                MysqlRootConfig.class , WebSecurityConfig.class, CustomRootConfig.class};
     }
 
     @Override

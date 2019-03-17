@@ -3,10 +3,32 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mcy.website.dao.UserMapper">
-    <select id="loadUserByUsername" resultType="user">
+    <resultMap id="userMapper" type="user">
+        <id column="id" property="id" />
+        <result column="account_expired" property="accountExpired" />
+        <collection column="id" property="loginIps" ofType="loginIp" select="com.mcy.website.dao.UserMapper.getLoginIps">
+        </collection>
+    </resultMap>
+    <select id="loadUserByUsername" resultMap="userMapper">
         select * from ws_user where username = #{username};
     </select>
     <select id="getUserRolesByUid" resultType="role">
         select * from ws_role r, ws_user_role ur where r.id = ur.rid and ur.uid = #{id};
     </select>
+    <select id="getRoleByRoleName" resultType="role">
+        select * from ws_role where name = #{name};
+    </select>
+    <select id="getLoginIps" resultType="loginIp">
+        select id, uid, ip, login_time as loginDate from ws_login_ip where uid = #{id} order by login_time desc limit 5;
+    </select>
+    <insert id="setRoleByUserId">
+        insert into ws_user_role(uid, rid) values(#{uid}, #{rid})
+    </insert>
+    <insert id="addUser" useGeneratedKeys="true" keyColumn="id" parameterType="user" keyProperty="id">
+        insert into ws_user(username, password, created_at) values(#{username}, #{password}, #{createdAt});
+    </insert>
+    <insert id="addLoginIp">
+        insert into ws_login_ip(uid, ip, login_time) values (#{uid}, #{ip}, #{loginDate})
+    </insert>
+
 </mapper>

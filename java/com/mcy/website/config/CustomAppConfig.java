@@ -12,4 +12,6 @@ public class CustomAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
     }
+
+
 }

@@ -4,7 +4,9 @@ public enum ResultDataEnum {
 
     SUCCESS_200(2000, "成功"),
     FAILD_500(5000, "未知错误!"),
-    FAILD_401(4001, "登录失败!");
+    FAILD_401(4001, "登录失败!"),
+    FAILD_1001(1001,"数据不合法"),
+    FAILD_3003(3003,"用户已存在");
 
     private int code;
     private String msg;

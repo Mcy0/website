@@ -1,13 +1,13 @@
 package com.mcy.website.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -16,8 +16,7 @@ import java.util.List;
 
 @Configuration
 //定义Spring MVC扫描的包
-@ComponentScan(value = "com.mcy.website.*", includeFilters =
-        {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)})
+@ComponentScan(value = "com.mcy.website.*")
 @EnableWebMvc
 public class AppConfig implements WebMvcConfigurer {
 
@@ -33,7 +32,7 @@ public class AppConfig implements WebMvcConfigurer {
         jackson2HttpMessageConverter.setSupportedMediaTypes(mediaTypes);
         //设置全局返回日期格式
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
         converters.add(jackson2HttpMessageConverter);
     }
@@ -61,5 +60,10 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.setUseSuffixPatternMatch(false);//关闭后缀模式匹配
+    }
+    //参数校验
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor(){
+        return new MethodValidationPostProcessor();
     }
 }
